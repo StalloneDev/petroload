@@ -1,7 +1,14 @@
 import { Truck, Order, ProductType } from './types';
 
-export const ZONES = ['North-Industrial', 'South-Retail', 'East-Harbor', 'West-Residential'];
+export const ZONES = ['Zone Nord-Industrielle', 'Zone Sud-Vente', 'Zone Est-Port', 'Zone Ouest-Résidentielle'];
 export const PRODUCTS: ProductType[] = ['DIESEL', 'SP95', 'SP98', 'HEATING_OIL'];
+
+export const PRODUCT_LABELS: Record<ProductType, string> = {
+  DIESEL: "Gazole",
+  SP95: "Sans Plomb 95",
+  SP98: "Sans Plomb 98",
+  HEATING_OIL: "Fioul Domestique",
+};
 
 export const MOCK_TRUCKS: Truck[] = [
   {
@@ -54,13 +61,13 @@ const generateOrders = (count: number): Order[] => {
     const product = PRODUCTS[Math.floor(Math.random() * PRODUCTS.length)];
     
     orders.push({
-      id: `ORD-${2024000 + i}`,
-      customerName: `Station ${zone.split('-')[0]} #${i + 1}`,
+      id: `CMD-${2024000 + i}`,
+      customerName: `Station ${zone.split('-')[0].replace('Zone ', '')} #${i + 1}`,
       product,
       quantity: qty,
       remainingQuantity: qty,
       zone,
-      status: 'PAID', // Requirement: Must be PAID
+      status: 'PAID',
       priority: Math.floor(Math.random() * 3) + 1,
     });
   }

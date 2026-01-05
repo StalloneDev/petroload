@@ -100,6 +100,11 @@ export default function Dashboard() {
     setSelectedOrderIds(next);
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem("auth");
+    window.location.reload();
+  };
+
   return (
     <div className="min-h-screen bg-background text-foreground p-6 font-sans bg-grid-pattern">
       <header className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 border-b border-border pb-6 gap-4">
@@ -113,6 +118,9 @@ export default function Dashboard() {
           </p>
         </div>
         <div className="flex flex-wrap gap-3">
+          <Button variant="ghost" className="text-muted-foreground hover:text-foreground" onClick={handleLogout}>
+            Déconnexion
+          </Button>
           <Button variant="outline" className="border-primary/20 hover:bg-primary/10 text-primary" onClick={() => toast({ title: "Importation", description: "Simulation de lecture de fichier Excel..." })}>
             <Upload className="mr-2 h-4 w-4" /> Importer Excel
           </Button>

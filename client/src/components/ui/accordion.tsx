@@ -1,7 +1,7 @@
 import * as React from "react"
 import * as AccordionPrimitive from "@radix-ui/react-accordion"
 import { ChevronDown } from "lucide-react"
-
+import { PRODUCT_LABELS } from "@/lib/mock-data"
 import { cn } from "@/lib/utils"
 
 const Accordion = AccordionPrimitive.Root

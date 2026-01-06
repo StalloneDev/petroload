@@ -1,12 +1,13 @@
-export type ProductType = 'DIESEL' | 'SP95' | 'SP98' | 'HEATING_OIL';
+export type ProductType = string; // Allow dynamic products from Excel
 export type OrderStatus = 'PENDING' | 'PAID' | 'SCHEDULED' | 'DELIVERED';
+export type TruckStatus = 'IDLE' | 'LOADING' | 'IN_TRANSIT' | 'AVAILABLE' | 'OPTIMIZED';
 
 export interface Compartment {
   id: string;
   capacity: number;
   currentLoad: number;
   productId: ProductType | null;
-  orderIds: string[]; // Can hold multiple orders if same product/zone? For now, simplify to one or split orders
+  orderIds: string[];
 }
 
 export interface Truck {
@@ -15,25 +16,28 @@ export interface Truck {
   licensePlate: string;
   maxWeight: number;
   compartments: Compartment[];
-  status: 'IDLE' | 'LOADING' | 'IN_TRANSIT';
+  status: TruckStatus;
   assignedZone: string | null;
 }
 
 export interface Order {
   id: string;
-  customerName: string;
+  orderNumber: string;
+  client: string;
+  station: string;
   product: ProductType;
   quantity: number;
-  remainingQuantity: number; // For split tracking
+  remainingQuantity: number;
   zone: string;
   status: OrderStatus;
-  priority: number; // 1-5
+  isLoaded: number; // 0: no, 1: yes
+  priority?: number;
 }
 
 export interface OptimizationResult {
   trucks: Truck[];
   remainingOrders: Order[];
-  fillRate: number; // Percentage
+  fillRate: number;
   totalVolumeMoved: number;
   utilizationByZone: Record<string, number>;
 }

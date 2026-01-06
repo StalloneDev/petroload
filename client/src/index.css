@@ -3,63 +3,144 @@
 
 @custom-variant dark (&:is(.dark *));
 
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 220 15% 10%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 220 15% 10%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 15% 10%;
+
+    --primary: 25 90% 55%;
+    /* Safety Orange */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 220 14% 96%;
+    --secondary-foreground: 220 15% 10%;
+
+    --muted: 220 14% 96%;
+    --muted-foreground: 220 8% 46%;
+
+    --accent: 25 90% 55%;
+    --accent-foreground: 220 15% 10%;
+
+    --destructive: 0 70% 50%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 25 90% 55%;
+
+    --chart-1: 25 90% 55%;
+    --chart-2: 190 80% 50%;
+    --chart-3: 140 70% 50%;
+    --chart-4: 280 60% 60%;
+    --chart-5: 340 70% 60%;
+
+    --radius: 0rem;
+  }
+
+  .dark {
+    --background: 220 15% 10%;
+    /* Very dark slate */
+    --foreground: 220 10% 95%;
+    /* Off-white */
+
+    --card: 220 15% 13%;
+    --card-foreground: 220 10% 95%;
+
+    --popover: 220 15% 13%;
+    --popover-foreground: 220 10% 95%;
+
+    --primary: 25 90% 55%;
+    --primary-foreground: 220 15% 10%;
+
+    --secondary: 215 20% 25%;
+    --secondary-foreground: 220 10% 95%;
+
+    --muted: 215 20% 20%;
+    --muted-foreground: 215 20% 65%;
+
+    --accent: 25 90% 55%;
+    --accent-foreground: 220 15% 10%;
+
+    --destructive: 0 70% 50%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 215 20% 20%;
+    --input: 215 20% 20%;
+    --ring: 25 90% 55%;
+
+    --chart-1: 25 90% 55%;
+    --chart-2: 190 80% 50%;
+    --chart-3: 140 70% 50%;
+    --chart-4: 280 60% 60%;
+    --chart-5: 340 70% 60%;
+  }
+}
+
 @theme inline {
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+
+  --color-chart-1: hsl(var(--chart-1));
+  --color-chart-2: hsl(var(--chart-2));
+  --color-chart-3: hsl(var(--chart-3));
+  --color-chart-4: hsl(var(--chart-4));
+  --color-chart-5: hsl(var(--chart-5));
+
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
 
-  /* Industrial Precision Theme */
-  /* Dark Slate / Navy bases with Safety Orange accents */
-  
-  --color-background: hsl(220 15% 10%); /* Very dark slate */
-  --color-foreground: hsl(220 10% 95%); /* Off-white */
-  
-  --color-card: hsl(220 15% 13%);
-  --color-card-foreground: hsl(220 10% 95%);
-  
-  --color-popover: hsl(220 15% 13%);
-  --color-popover-foreground: hsl(220 10% 95%);
-  
-  --color-primary: hsl(25 90% 55%); /* Safety Orange */
-  --color-primary-foreground: hsl(220 15% 10%);
-  
-  --color-secondary: hsl(215 20% 25%); /* Industrial Blue-Grey */
-  --color-secondary-foreground: hsl(220 10% 95%);
-  
-  --color-muted: hsl(215 20% 20%);
-  --color-muted-foreground: hsl(215 20% 65%);
-  
-  --color-accent: hsl(25 90% 55%);
-  --color-accent-foreground: hsl(220 15% 10%);
-  
-  --color-destructive: hsl(0 70% 50%);
-  --color-destructive-foreground: hsl(210 40% 98%);
-  
-  --color-border: hsl(215 20% 20%);
-  --color-input: hsl(215 20% 20%);
-  --color-ring: hsl(25 90% 55%);
-  
-  --color-chart-1: hsl(25 90% 55%); /* Orange */
-  --color-chart-2: hsl(190 80% 50%); /* Cyan */
-  --color-chart-3: hsl(140 70% 50%); /* Green */
-  --color-chart-4: hsl(280 60% 60%); /* Purple */
-  --color-chart-5: hsl(340 70% 60%); /* Pink */
-
   --font-sans: 'Inter', sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
-  
-  --radius: 0rem; /* Square corners for industrial look */
 }
 
 @layer base {
   * {
     @apply border-border;
   }
+
   body {
     @apply font-sans antialiased bg-background text-foreground;
   }
-  h1, h2, h3, h4, h5, h6 {
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     @apply font-mono tracking-tight;
   }
 }

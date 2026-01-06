@@ -2,27 +2,29 @@ import { Truck, Compartment, ProductType, Order } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { 
-  Dialog, 
-  DialogContent, 
-  DialogHeader, 
-  DialogTitle, 
-  DialogTrigger 
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger
 } from "@/components/ui/dialog";
-import { 
+import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { PRODUCT_LABELS } from "@/lib/mock-data";
-import { Info, Package, Truck as TruckIcon, User, Droplets, Hash, MapPin } from "lucide-react";
+import { PRODUCT_LABELS } from "../lib/mock-data";
+import { Info, Package, Truck as TruckIcon, User, Droplets, Hash, MapPin, CheckCircle, AlertTriangle } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
 
 interface TruckVisualizerProps {
   truck: Truck;
   allOrders: Order[];
+  onValidate?: (truck: Truck) => void;
+  isValidating?: boolean;
 }
 
 const PRODUCT_COLORS: Record<ProductType, string> = {
@@ -39,7 +41,7 @@ const PRODUCT_TEXT_COLORS: Record<ProductType, string> = {
   HEATING_OIL: "text-orange-400",
 };
 
-export function TruckVisualizer({ truck, allOrders }: TruckVisualizerProps) {
+export function TruckVisualizer({ truck, allOrders, onValidate, isValidating }: TruckVisualizerProps) {
   const totalCapacity = truck.compartments.reduce((acc, c) => acc + c.capacity, 0);
   const totalLoad = truck.compartments.reduce((acc, c) => acc + c.currentLoad, 0);
   const fillRate = Math.round((totalLoad / totalCapacity) * 100);
@@ -55,6 +57,27 @@ export function TruckVisualizer({ truck, allOrders }: TruckVisualizerProps) {
         </div>
         <div className="flex items-center gap-3">
           <div className="text-right">
+            {truck.status === 'OPTIMIZED' && (
+              fillRate === 100 ? (
+                <Button
+                  size="sm"
+                  className="h-7 text-[10px] font-bold bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm"
+                  onClick={() => onValidate?.(truck)}
+                  disabled={isValidating}
+                >
+                  <CheckCircle className="w-3 h-3 mr-1" /> VALIDER
+                </Button>
+              ) : (
+                <Button
+                  size="sm"
+                  className="h-7 text-[10px] font-bold bg-amber-600 hover:bg-amber-700 text-white shadow-sm"
+                  onClick={() => onValidate?.(truck)}
+                  disabled={isValidating}
+                >
+                  <AlertTriangle className="w-3 h-3 mr-1" /> FORCER VALIDATION
+                </Button>
+              )
+            )}
             <Dialog>
               <DialogTrigger asChild>
                 <Button size="sm" variant="outline" className="h-7 text-[10px] font-bold border-primary/20 hover:bg-primary/10">
@@ -93,7 +116,7 @@ export function TruckVisualizer({ truck, allOrders }: TruckVisualizerProps) {
                         const loadedOrders = allOrders.filter(o => comp.orderIds.includes(o.id));
                         const isEmpty = comp.currentLoad === 0;
                         const spaceLeft = comp.capacity - comp.currentLoad;
-                        
+
                         return (
                           <AccordionItem key={comp.id} value={comp.id} className="border border-border bg-background/30 rounded-sm px-4">
                             <AccordionTrigger className="hover:no-underline py-4">
@@ -141,7 +164,7 @@ export function TruckVisualizer({ truck, allOrders }: TruckVisualizerProps) {
                                       <div key={order.id} className="p-2 bg-slate-900/30 border border-border/30 rounded flex items-center justify-between">
                                         <div className="flex items-center gap-2">
                                           <Hash className="w-3 h-3 text-primary" />
-                                          <span className="text-xs font-mono">{order.id}</span>
+                                          <span className="text-xs font-mono">{order.orderNumber}</span>
                                         </div>
                                         <span className="text-xs font-bold text-primary">{comp.currentLoad} L</span>
                                       </div>
@@ -180,9 +203,9 @@ export function TruckVisualizer({ truck, allOrders }: TruckVisualizerProps) {
                                 <Package className="w-5 h-5 text-primary" />
                               </div>
                               <div>
-                                <div className="text-sm font-bold">{order.customerName}</div>
+                                <div className="text-sm font-bold">{order.client}</div>
                                 <div className="flex items-center gap-2 text-[10px] text-muted-foreground font-mono">
-                                  <span className="text-primary font-bold">{order.id}</span>
+                                  <span className="text-primary font-bold">{order.orderNumber}</span>
                                   <Separator orientation="vertical" className="h-2" />
                                   <MapPin className="w-2 h-2" /> {order.zone}
                                 </div>
@@ -244,8 +267,8 @@ export function TruckVisualizer({ truck, allOrders }: TruckVisualizerProps) {
       </div>
       <div className="flex justify-between px-8 -mt-2 opacity-50">
         <div className="flex gap-2">
-            <div className="w-8 h-8 rounded-full bg-slate-800 border-2 border-slate-700" />
-            <div className="w-8 h-8 rounded-full bg-slate-800 border-2 border-slate-700" />
+          <div className="w-8 h-8 rounded-full bg-slate-800 border-2 border-slate-700" />
+          <div className="w-8 h-8 rounded-full bg-slate-800 border-2 border-slate-700" />
         </div>
         <div className="w-8 h-8 rounded-full bg-slate-800 border-2 border-slate-700" />
       </div>

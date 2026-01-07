@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Activity, Lock, User } from "lucide-react";
+import { Lock, User } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { motion } from "framer-motion";
 
@@ -39,10 +39,9 @@ export default function Login() {
         animate={{ opacity: 1, y: 0 }}
         className="w-full max-w-md"
       >
-        <div className="flex justify-center mb-8">
+        <div className="flex justify-center mb-6">
           <div className="flex items-center gap-3">
-            <Activity className="h-10 w-10 text-primary" />
-            <h1 className="text-4xl font-bold tracking-tighter text-primary">OPTIFLEET</h1>
+            <img src="/favicon.png" alt="OptiFleet Logo" className="h-32 w-auto" />
           </div>
         </div>
 
@@ -88,7 +87,7 @@ export default function Login() {
             </form>
           </CardContent>
         </Card>
-        
+
         <p className="mt-8 text-center text-xs text-muted-foreground font-mono">
           © 2026 PETROLOGISTICS SYSTEM - SÉCURITÉ NIVEAU 4
         </p>

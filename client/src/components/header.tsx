@@ -1,4 +1,4 @@
-import { Activity, Menu, LogOut, LayoutDashboard, Truck, MapPin, ClipboardCheck, Package } from "lucide-react";
+import { Menu, LogOut, LayoutDashboard, Truck, MapPin, ClipboardCheck, Package } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
     DropdownMenu,
@@ -31,8 +31,8 @@ export function Header({ title, subtitle, children }: HeaderProps) {
                 <h1 className="text-3xl font-bold tracking-tighter text-primary flex items-center gap-3">
                     {title || (
                         <>
-                            <Activity className="h-8 w-8" />
-                            OPTIFLEET <span className="text-foreground/50 text-lg font-light hidden sm:inline">| Commande Logistique</span>
+                            <img src="/favicon.png" alt="OptiFleet Logo" className="h-24 w-auto mr-3" />
+                            <span className="text-foreground/50 text-lg font-light hidden sm:inline">| Commande Logistique</span>
                         </>
                     )}
                 </h1>

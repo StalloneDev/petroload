@@ -14,19 +14,41 @@ export default function Login() {
   const [, setLocation] = useLocation();
   const { toast } = useToast();
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (username === "superviseur" && password === "petroload!123") {
-      localStorage.setItem("auth", "true");
-      toast({
-        title: "Connexion réussie",
-        description: "Bienvenue dans le centre de commande OptiFleet.",
+    try {
+      const res = await fetch("/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password }),
       });
-      setLocation("/");
-    } else {
+
+      if (res.ok) {
+        const user = await res.json();
+        localStorage.setItem("user", JSON.stringify(user));
+
+        toast({
+          title: "Connexion réussie",
+          description: `Bienvenue ${user.username}.`,
+        });
+
+        if (user.role === "transporteur") {
+          setLocation("/trucks");
+        } else {
+          setLocation("/");
+        }
+      } else {
+        const error = await res.text(); // or res.json() depending on backend
+        toast({
+          title: "Erreur d'authentification",
+          description: "Identifiants invalides. Veuillez réessayer.",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
       toast({
-        title: "Erreur d'authentification",
-        description: "Identifiants invalides. Veuillez réessayer.",
+        title: "Erreur",
+        description: "Une erreur est survenue lors de la connexion.",
         variant: "destructive",
       });
     }

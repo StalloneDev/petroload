@@ -5,23 +5,25 @@ import { eq } from "drizzle-orm";
 
 async function main() {
     try {
-        const username = "superviseur";
-        const password = "petroload!123";
+        const usersToSeed = [
+            { username: "superviseur", password: "petroload!123", role: "admin" },
+            { username: "transporteur", password: "transporteur", role: "transporteur" }
+        ];
 
-        console.log(`Checking if user '${username}' exists...`);
-        const existingUser = await db.query.users.findFirst({
-            where: eq(users.username, username),
-        });
+        for (const u of usersToSeed) {
+            console.log(`Checking if user '${u.username}' exists...`);
+            const existingUser = await db.query.users.findFirst({
+                where: eq(users.username, u.username),
+            });
 
-        if (existingUser) {
-            console.log(`User '${username}' already exists.`);
-            // Optional: update password if needed
-            // await db.update(users).set({ password }).where(eq(users.username, username));
-            // console.log("Password updated.");
-        } else {
-            console.log(`Creating user '${username}'...`);
-            await db.insert(users).values({ username, password });
-            console.log("User created successfully.");
+            if (existingUser) {
+                console.log(`User '${u.username}' already exists. Updating role...`);
+                await db.update(users).set({ role: u.role }).where(eq(users.username, u.username));
+            } else {
+                console.log(`Creating user '${u.username}'...`);
+                await db.insert(users).values(u);
+                console.log(`User '${u.username}' created successfully.`);
+            }
         }
     } catch (error) {
         console.error("Error seeding database:", error);

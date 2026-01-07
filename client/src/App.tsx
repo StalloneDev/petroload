@@ -17,8 +17,18 @@ const ValidationsPage = lazy(() => import("@/pages/validations"));
 const OrdersHistoryPage = lazy(() => import("@/pages/orders-history"));
 
 function ProtectedRoute({ component: Component }: { component: React.ComponentType }) {
-  const auth = localStorage.getItem("auth") === "true";
-  if (!auth) return <Redirect to="/login" />;
+  const userStr = localStorage.getItem("user");
+  const user = userStr ? JSON.parse(userStr) : null;
+  const location = window.location.pathname;
+
+  if (!user) return <Redirect to="/login" />;
+
+  // Role based redirection
+  if (user.role === "transporteur" && location !== "/trucks") {
+    // Prevent transporteur from accessing anything other than trucks
+    return <Redirect to="/trucks" />;
+  }
+
   return <Component />;
 }
 

@@ -95,7 +95,7 @@ export default function OrdersHistoryPage() {
     return (
         <div className="container mx-auto p-6 space-y-8">
             <Header
-                title={<><Package className="h-8 w-8 text-primary" /> Historique des Commandes</>}
+                title="Historique des Commandes"
                 subtitle="Suivi centralisé de toutes les commandes importées"
             >
                 <Button
@@ -107,6 +107,7 @@ export default function OrdersHistoryPage() {
                     <Trash2 className="h-4 w-4" /> Vider l'historique
                 </Button>
             </Header>
+
 
             {/* KPI Cards */}
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">

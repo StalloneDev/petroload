@@ -137,11 +137,7 @@ export default function StationsPage() {
     return (
         <div className="container mx-auto p-6 space-y-8">
             <Header
-                title={
-                    <>
-                        <MapPin className="h-8 w-8" /> Répertoire Stations
-                    </>
-                }
+                title="Répertoire Stations"
                 subtitle="Gérez vos points de livraison et clients"
             >
                 <Dialog open={isOpen} onOpenChange={(open) => { setIsOpen(open); if (!open) setEditingStation(null); }}>

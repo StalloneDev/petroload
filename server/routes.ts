@@ -9,6 +9,20 @@ export async function registerRoutes(
   // put application routes here
   // prefix all routes with /api
 
+  // Authentication
+  app.post("/api/login", async (req, res) => {
+    const { username, password } = req.body;
+    const user = await storage.getUserByUsername(username);
+
+    if (!user || user.password !== password) {
+      return res.status(401).json({ message: "Invalid credentials" });
+    }
+
+    // Return user without password
+    const { password: _, ...userWithoutPassword } = user;
+    res.json(userWithoutPassword);
+  });
+
   // Stations
   app.get("/api/stations", async (_req, res) => {
     const result = await storage.getStations();

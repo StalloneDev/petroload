@@ -77,7 +77,7 @@ export default function ValidationsPage() {
     return (
         <div className="container mx-auto p-6 space-y-8">
             <Header
-                title={<><ClipboardCheck className="h-8 w-8 text-emerald-500" /> Mes Validations</>}
+                title="Mes Validations"
                 subtitle="Historique des chargements validés et rapports"
             >
                 <div className="flex items-center gap-3">

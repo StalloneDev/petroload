@@ -130,22 +130,24 @@ export default function TrucksPage() {
             (truck.driverName && truck.driverName.toLowerCase().includes(searchTerm.toLowerCase())))
     );
 
+    const userStr = localStorage.getItem("user");
+    const user = userStr ? JSON.parse(userStr) : null;
+    const isTransporteur = user?.role === "transporteur";
+
     return (
         <div className="container mx-auto p-6 space-y-8">
             <Header
-                title={
-                    <>
-                        <TruckIcon className="h-8 w-8" /> Flotte & Chauffeurs
-                    </>
-                }
+                title="Flotte & Chauffeurs"
                 subtitle="Gérez vos camions et conducteurs"
             >
                 <Dialog open={isOpen} onOpenChange={(open) => { setIsOpen(open); if (!open) setEditingTruck(null); }}>
-                    <DialogTrigger asChild>
-                        <Button className="bg-primary text-primary-foreground font-bold">
-                            <Plus className="mr-2 h-4 w-4" /> Nouveau Camion
-                        </Button>
-                    </DialogTrigger>
+                    {!isTransporteur && (
+                        <DialogTrigger asChild>
+                            <Button className="bg-primary text-primary-foreground font-bold">
+                                <Plus className="mr-2 h-4 w-4" /> Nouveau Camion
+                            </Button>
+                        </DialogTrigger>
+                    )}
 
                     <DialogContent>
                         <DialogHeader>
@@ -154,19 +156,47 @@ export default function TrucksPage() {
                         <form onSubmit={handleSubmit} className="space-y-4">
                             <div className="space-y-2">
                                 <Label htmlFor="licensePlate">Immatriculation</Label>
-                                <Input id="licensePlate" name="licensePlate" defaultValue={editingTruck?.licensePlate} required placeholder="Ex: AA-123-BB" />
+                                <Input
+                                    id="licensePlate"
+                                    name="licensePlate"
+                                    defaultValue={editingTruck?.licensePlate}
+                                    required
+                                    placeholder="Ex: AA-123-BB"
+                                    readOnly={isTransporteur}
+                                    className={isTransporteur ? "bg-muted" : ""}
+                                />
                             </div>
                             <div className="space-y-2">
                                 <Label htmlFor="capacity">Capacités (séparées par virgule)</Label>
-                                <Input id="capacity" name="capacity" defaultValue={editingTruck?.capacity.join(', ')} required placeholder="Ex: 5000, 10000, 5000" />
+                                <Input
+                                    id="capacity"
+                                    name="capacity"
+                                    defaultValue={editingTruck?.capacity.join(', ')}
+                                    required
+                                    placeholder="Ex: 5000, 10000, 5000"
+                                    readOnly={isTransporteur}
+                                    className={isTransporteur ? "bg-muted" : ""}
+                                />
                             </div>
                             <div className="space-y-2">
                                 <Label htmlFor="driverName">Nom Conducteur</Label>
-                                <Input id="driverName" name="driverName" defaultValue={editingTruck?.driverName || ''} />
+                                <Input
+                                    id="driverName"
+                                    name="driverName"
+                                    defaultValue={editingTruck?.driverName || ''}
+                                    readOnly={isTransporteur} // Transporteur can modify status but not details? Assuming logic is strict.
+                                    className={isTransporteur ? "bg-muted" : ""}
+                                />
                             </div>
                             <div className="space-y-2">
                                 <Label htmlFor="driverPhone">Contact</Label>
-                                <Input id="driverPhone" name="driverPhone" defaultValue={editingTruck?.driverPhone || ''} />
+                                <Input
+                                    id="driverPhone"
+                                    name="driverPhone"
+                                    defaultValue={editingTruck?.driverPhone || ''}
+                                    readOnly={isTransporteur}
+                                    className={isTransporteur ? "bg-muted" : ""}
+                                />
                             </div>
                             {editingTruck && (
                                 <div className="space-y-2">
@@ -301,14 +331,16 @@ export default function TrucksPage() {
                                             </TooltipTrigger>
                                             <TooltipContent>Modifier</TooltipContent>
                                         </Tooltip>
-                                        <Tooltip>
-                                            <TooltipTrigger asChild>
-                                                <Button variant="ghost" size="icon" onClick={() => deleteMutation.mutate(truck.id)}>
-                                                    <Trash2 className="h-4 w-4 text-destructive" />
-                                                </Button>
-                                            </TooltipTrigger>
-                                            <TooltipContent>Supprimer</TooltipContent>
-                                        </Tooltip>
+                                        {!isTransporteur && (
+                                            <Tooltip>
+                                                <TooltipTrigger asChild>
+                                                    <Button variant="ghost" size="icon" onClick={() => deleteMutation.mutate(truck.id)}>
+                                                        <Trash2 className="h-4 w-4 text-destructive" />
+                                                    </Button>
+                                                </TooltipTrigger>
+                                                <TooltipContent>Supprimer</TooltipContent>
+                                            </Tooltip>
+                                        )}
                                     </TooltipProvider>
                                 </TableCell>
                             </TableRow>
@@ -318,6 +350,12 @@ export default function TrucksPage() {
                                 <TableCell colSpan={5} className="text-center py-8 text-muted-foreground">
                                     Aucun camion trouvé.
                                 </TableCell>
+                            </TableRow>
+                        )}
+                        {/* Empty row to allow editing if needed */}
+                        {isTransporteur && filteredTrucks.length > 0 && (
+                            <TableRow>
+                                <TableCell colSpan={5} />
                             </TableRow>
                         )}
                     </TableBody>
